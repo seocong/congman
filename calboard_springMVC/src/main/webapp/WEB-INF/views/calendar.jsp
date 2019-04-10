@@ -143,7 +143,7 @@ a {
 		<col width="80px">
 		<col width="80px">
 		<tr>
-			<th>일</th>
+			<th>일헤헤</th>
 			<th>월</th>
 			<th>화</th>
 			<th>수</th>

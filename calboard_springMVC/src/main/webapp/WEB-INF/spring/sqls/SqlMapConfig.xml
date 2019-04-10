@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>	
+	
+<!-- 	변수설정: Mapper.xml에서 쿼리실행후에 결과값을 담을 객체의 이름을 설정 -->
+	<typeAliases>
+		<typeAlias type="com.hk.dtos.CalDto" alias="CalDto" />
+		<!-- 패키지 명.파일명 => 큐네임 -->
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="/sqls/Calboard-Mapper.xml"/>
+	</mappers>
+</configuration>
+
+
+

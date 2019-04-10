@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hk.cal">
+	<!-- <resultMap type=""com.hk.dtos.HkDto" id="HkDtoMap"> <result column="seq" 
+		property="seq1" /> </resultMap> -->
+	<resultMap type="com.hk.dtos.CalDto" id="CalDtoMap">
+		<result property="seq" column="SEQ" />
+		<result property="id" column="ID" />
+		<result property="title" column="TITLE" />
+		<result property="content" column="CONTENT" />
+		<result property="mdate" column="MDATE" />
+		<result property="regdate" column="REGDATE" />
+	</resultMap>
+
+	<select id="callist" resultMap="CalDtoMap">
+		SELECT SEQ, ID, TITLE, CONTENT, MDATE, REGDATE FROM CALBOARD WHERE
+		ID=#{id} AND SUBSTR(MDATE,1,8)=#{yyyyMMdd}
+		<!-- substr은 뒤의 parameter의 경우 length를 의미 / java는 index숫자임 -->
+	</select>
+	
+	<select id="caldetail" resultType="int" resultMap="CalDtoMap">
+		SELECT SEQ,ID,TITLE,CONTENT,MDATE,REGDATE FROM CALBOARD WHERE SEQ=#{seq}
+	</select>
+	
+	<update id="calupdate" parameterType="CalDto">
+		UPDATE CALBOARD SET TITLE=#{title}, CONTENT=#{content}, MDATE=#{mdate}, REGDATE=SYSDATE WHERE SEQ=#{seq}
+	</update>
+	
+	<delete id="calmuldel" parameterType="Map">
+		DELETE FROM CALBOARD WHERE SEQ IN 
+		<foreach collection="seqs" item="seq" open="(" close=")" separator=",">
+			#{seq}
+		</foreach>
+	</delete>
+	
+	<insert id="calinsert" parameterType="CalDto">
+		INSERT INTO CALBOARD
+		VALUES(CALBOARD_SEQ.NEXTVAL,#{id}, #{title}, #{content}, #{mdate},
+		SYSDATE)
+	</insert>
+
+	<select id="calviewlist" resultMap="CalDtoMap" parameterType="Map">
+		SELECT rn,seq,id,title,content,mdate,regdate
+		FROM (
+		SELECT (ROW_NUMBER() OVER(PARTITION BY SUBSTR(mdate,1,8) ORDER BY mdate)) AS
+		rn,seq,id,title, content, mdate, regdate FROM CALBOARD WHERE id=#{id}
+		AND substr(mdate,1,6)=#{yyyyMM}
+		) WHERE rn BETWEEN 1 AND 3
+	</select>
+	
+	<select id="calcount" resultType="Integer" parameterType="Map">
+		SELECT COUNT(*) FROM CALBOARD WHERE ID = #{id} AND SUBSTR(MDATE,1,8)=#{yyyyMMdd}
+	</select>
+</mapper>

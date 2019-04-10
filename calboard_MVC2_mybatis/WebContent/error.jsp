@@ -11,5 +11,6 @@
 <h2>오류내용: ${msg}</h2>
 <a href="index.jsp">메인으로 돌아가기</a>
 <h3>소진안녕</h3>
+<h1>BaBo</h1>
 </body>
 </html>
